@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import React, { FC, ReactElement } from 'react';
+import { customTheme } from './theme/customTheme';
+import { Dashboard } from './pages/dashboard';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import ComposeContext from './context/Compose.context';
+import { rootContext } from './context/root.context';
 
-function App() {
+const queryClient = new QueryClient();
+
+const App: FC = (): ReactElement => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <QueryClientProvider client={queryClient}>
+      <ComposeContext components={rootContext}>
+        <ThemeProvider theme={customTheme}>
+          <CssBaseline />
+          <Dashboard />
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </ComposeContext>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
